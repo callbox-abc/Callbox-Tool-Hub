@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Callbox Tool Hub</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🗂️</text></svg>">
+<link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper:#f8f7f4;
+    --ink:#1a1a2e;
+    --ink-soft:#4a4a63;
+    --line:#e5e2db;
+    --card:#ffffff;
+  }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --paper:#121218;
+      --ink:#e8e8f0;
+      --ink-soft:#9a9ab0;
+      --line:#2a2a3a;
+      --card:#1a1a24;
+    }
+  }
+  :root[data-theme="dark"]{
+    --paper:#121218;
+    --ink:#e8e8f0;
+    --ink-soft:#9a9ab0;
+    --line:#2a2a3a;
+    --card:#1a1a24;
+  }
+  *{box-sizing:border-box;}
+  html,body{height:100%;margin:0;}
+  body{
+    background:var(--paper);
+    color:var(--ink);
+    font-family:'Libre Baskerville', Georgia, serif;
+    padding-top:env(safe-area-inset-top,0px);
+    padding-bottom:env(safe-area-inset-bottom,0px);
+    transition:background .2s ease, color .2s ease;
+  }
+  .mono{ font-family:'DM Mono', ui-monospace, monospace; }
+  .wrap{ max-width:980px; margin:0 auto; padding:0 24px; }
+
+  header{
+    padding:56px 0 40px;
+    border-bottom:1px solid var(--line);
+  }
+  .kicker{
+    font-size:12.5px;
+    color:var(--ink-soft);
+    letter-spacing:.2px;
+    margin:0 0 14px;
+  }
+  h1{
+    font-size:clamp(32px, 5vw, 46px);
+    line-height:1.08;
+    margin:0 0 14px;
+    font-weight:700;
+    letter-spacing:-0.01em;
+  }
+  header p{
+    font-size:16px;
+    color:var(--ink-soft);
+    max-width:52ch;
+    line-height:1.6;
+    margin:0;
+  }
+  .theme-toggle{
+    position:absolute;
+    top:20px; right:24px;
+    font-family:'DM Mono',monospace;
+    font-size:12px;
+    background:transparent;
+    border:1px solid var(--line);
+    color:var(--ink-soft);
+    padding:6px 12px;
+    border-radius:20px;
+    cursor:pointer;
+  }
+  .page{ position:relative; min-height:100%; }
+
+  main{ padding:40px 0 80px; }
+  .grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit, minmax(260px,1fr));
+    gap:22px;
+  }
+  .card{
+    background:var(--card);
+    border:1px solid var(--line);
+    border-radius:4px;
+    padding:28px 26px 24px;
+    display:flex;
+    flex-direction:column;
+    gap:14px;
+    text-decoration:none;
+    color:inherit;
+    position:relative;
+    transition:border-color .15s ease, transform .15s ease;
+  }
+  .card:hover{ border-color:var(--accent); }
+  .card:focus-visible{ outline:2px solid var(--accent); outline-offset:3px; }
+  .card:active{ transform:translateY(1px); }
+
+  .card-top{ display:flex; align-items:center; justify-content:space-between; }
+  .icon{
+    font-size:28px;
+    line-height:1;
+  }
+  .tag{
+    font-family:'DM Mono',monospace;
+    font-size:10.5px;
+    color:var(--accent);
+    border:1px solid var(--accent);
+    border-radius:3px;
+    padding:3px 7px;
+  }
+  .card h2{
+    font-size:19px;
+    margin:0;
+    font-weight:700;
+    line-height:1.3;
+  }
+  .card p{
+    font-family:system-ui, -apple-system, sans-serif;
+    font-size:13.5px;
+    line-height:1.55;
+    color:var(--ink-soft);
+    margin:0;
+    flex:1;
+  }
+  .card-foot{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    padding-top:6px;
+    border-top:1px solid var(--line);
+    font-family:'DM Mono',monospace;
+    font-size:11.5px;
+    color:var(--ink-soft);
+  }
+  .open{ color:var(--accent); font-weight:500; }
+
+  .placeholder-note{
+    margin-top:6px;
+    font-size:10.5px;
+    color:#c2654a;
+  }
+
+  footer{
+    border-top:1px solid var(--line);
+    padding:22px 0 40px;
+    font-family:'DM Mono',monospace;
+    font-size:11.5px;
+    color:var(--ink-soft);
+    display:flex;
+    justify-content:space-between;
+    flex-wrap:wrap;
+    gap:8px;
+  }
+  footer a{ color:var(--ink-soft); }
+
+  @media (max-width:520px){
+    header{ padding:72px 0 32px; }
+    .theme-toggle{ top:16px; right:16px; }
+  }
+</style>
+</head>
+<body>
+<div class="page">
+  <button class="theme-toggle" id="themeBtn" type="button">Dark</button>
+  <div class="wrap">
+    <header>
+      <p class="kicker mono">Callbox Inc. — internal tools</p>
+      <h1>Callbox Tool Hub</h1>
+      <p>A working index of the content, SEO, and lead-gen tools built for the team. Pick one below to open it.</p>
+    </header>
+
+    <main>
+      <div class="grid" id="grid"></div>
+    </main>
+
+    <footer>
+      <span>Updated by hand — edit the TOOLS list in index.html to add or change tools.</span>
+      <span>Hosted on Vercel</span>
+    </footer>
+  </div>
+</div>
+
+<script>
+  // ---- EDIT THIS LIST ----
+  // Replace `url` with each tool's real deployed link once it's live on Vercel / v0.
+  // `accent` accepts any CSS color and tints that card's border, tag and link.
+  const TOOLS = [
+    {
+      icon: "🎉",
+      title: "Seasonal Topic Generator",
+      tag: "Content",
+      accent: "#c2654a",
+      description: "Generates B2B blog topics tied to seasonal events and holidays across US, APAC and AU regions, then drafts full SEO-ready articles.",
+      url: "#"
+    },
+    {
+      icon: "💡",
+      title: "Callbox Idea Lab",
+      tag: "Content",
+      accent: "#6366f1",
+      description: "The full content suite: event-based, custom, and trend-inspired topic generation, article rewriting by tone, graphics prompts, and a saved article bucket.",
+      url: "#"
+    },
+    {
+      icon: "☑",
+      title: "SEO Audit Checklist",
+      tag: "SEO",
+      accent: "#16a34a",
+      description: "A structured, 70+ point homepage and site-health checklist across linking, on-page, technical, content and indexing — with AI-generated monitoring plans.",
+      url: "#"
+    },
+    {
+      icon: "📡",
+      title: "AI-Answer Readiness Audit",
+      tag: "AEO/GEO",
+      accent: "#0891b2",
+      description: "Scores a live Callbox page against a 14-element GEO/AEO framework — whether it gets cited and named in AI answers, not just whether it ranks.",
+      url: "https://aeo-geo-audit.vercel.app/"
+    },
+    {
+      icon: "🗂️",
+      title: "AI Citation Desk",
+      tag: "AEO/GEO",
+      accent: "#8b5cf6",
+      description: "Pulls seven research cards on any niche: what buyers ask AI, where competitors are thin, and who's worth pitching — grounded in live web search.",
+      url: "https://ai-citation-summary.vercel.app/"
+    },
+    {
+      icon: "📊",
+      title: "Semrush Reporter",
+      tag: "SEO",
+      accent: "#2563eb",
+      description: "Runs a Semrush-powered SEO audit for a domain and turns it into a Callbox SEO Intelligence report.",
+      url: "https://project-p7qu9.vercel.app/"
+    },
+    {
+      icon: "✍️",
+      title: "Post Auto Draft",
+      tag: "Content",
+      accent: "#d97706",
+      description: "Uploads and cleans up writer drafts, then pushes them straight to the right Callbox WordPress site. Requires sign-in.",
+      url: "https://callbox-post-drafter.vercel.app/"
+    },
+    {
+      icon: "📁",
+      title: "Case Study Generator",
+      tag: "Content",
+      accent: "#be123c",
+      description: "Upload a draft .docx or PDF and it's mapped into Callbox's corporate case study format, ready to export as a copy-pasteable PDF.",
+      url: "https://callbox-case-study-generator.vercel.app/"
+    }
+  ];
+
+  const grid = document.getElementById("grid");
+  TOOLS.forEach(t => {
+    const isPlaceholder = !t.url || t.url === "#";
+    const card = document.createElement(isPlaceholder ? "div" : "a");
+    if (!isPlaceholder){ card.href = t.url; card.target = "_blank"; card.rel = "noopener"; }
+    card.className = "card";
+    card.style.setProperty("--accent", t.accent || "#6366f1");
+    card.innerHTML = `
+      <div class="card-top">
+        <span class="icon">${t.icon}</span>
+        <span class="tag">${t.tag}</span>
+      </div>
+      <h2>${t.title}</h2>
+      <p>${t.description}</p>
+      <div class="card-foot">
+        <span>React · Claude-powered</span>
+        <span class="open">${isPlaceholder ? "Link not set" : "Open tool →"}</span>
+      </div>
+      ${isPlaceholder ? "<div class=\"placeholder-note mono\">Add this tool&#39;s deployed URL in the TOOLS list.</div>" : ""}
+    `;
+    grid.appendChild(card);
+  });
+
+  // Theme toggle (defaults to system preference, remembers choice for this browser only)
+  const btn = document.getElementById("themeBtn");
+  function applyTheme(mode){
+    if (mode) document.documentElement.setAttribute("data-theme", mode);
+    else document.documentElement.removeAttribute("data-theme");
+    btn.textContent = (mode === "dark") ? "Light" : "Dark";
+  }
+  let saved = null;
+  try { saved = localStorage.getItem("hub-theme"); } catch(e) {}
+  applyTheme(saved);
+  btn.addEventListener("click", () => {
+    const current = document.documentElement.getAttribute("data-theme");
+    const next = current === "dark" ? "light" : "dark";
+    applyTheme(next);
+    try { localStorage.setItem("hub-theme", next); } catch(e) {}
+  });
+</script>
+</body>
+</html>
