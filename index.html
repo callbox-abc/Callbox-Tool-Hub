@@ -260,9 +260,20 @@
     }
   ];
 
+  // Helper check: returns true if tool has a live URL
+  const hasLiveUrl = (t) => t.url && t.url.trim() !== "" && t.url !== "#";
+
+  // Sort tools so items WITH live URLs appear top, items without go to the bottom
+  const sortedTools = [...TOOLS].sort((a, b) => {
+    const aReady = hasLiveUrl(a);
+    const bReady = hasLiveUrl(b);
+    if (aReady === bReady) return 0;
+    return aReady ? -1 : 1;
+  });
+
   const grid = document.getElementById("grid");
-  TOOLS.forEach(t => {
-    const isPlaceholder = !t.url || t.url === "#";
+  sortedTools.forEach(t => {
+    const isPlaceholder = !hasLiveUrl(t);
     const card = document.createElement(isPlaceholder ? "div" : "a");
     if (!isPlaceholder){ card.href = t.url; card.target = "_blank"; card.rel = "noopener"; }
     card.className = "card";
